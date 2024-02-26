@@ -1,19 +1,22 @@
 "use client";
+import fetcher from "@/libs/fetcher";
 import { Button,  useToast } from "@chakra-ui/react";
 import { signOut  } from "next-auth/react";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import React, { useCallback } from "react";
 import useSWR from "swr";
-import fetcher from "@/libs/fetcher";
+
 
 
 
 const Navbar = () => {
 
+  const {data} = useSWR<{isAdmin:string}>('/api/isAdmin',fetcher)
+
   const pathName = usePathname()
   const quizId = pathName.split("/").pop();
   const toast = useToast()
-  const isTeacher = false
+  const isTeacher = true
   const isAdminPage = pathName.includes('/admin')
   const isEditPage = pathName.includes(`/admin/edit/${quizId}`)
   const isResultsPage = pathName.includes('/results')
@@ -21,7 +24,7 @@ const Navbar = () => {
   const isHomePage = pathName==='/'
   const router = useRouter()
 
-  // const {data:isTeacher} = useSWR<{isAdmin:boolean}>(`/api/isAdmin`,fetcher)
+
 
  
 
@@ -48,7 +51,7 @@ const Navbar = () => {
        }
     }, [isQuizPage,toast]);
 
-    console.log(isTeacher)
+    console.log(data?.isAdmin)
 
     
 
@@ -64,16 +67,18 @@ const Navbar = () => {
         BrainBurst
       </p>
       <div className="flex gap-3 items-center">
-        {isTeacher &&
+        {data?.isAdmin &&
           !isResultsPage &&
           !isAdminPage &&
-          !isQuizPage && (
+          !isQuizPage && 
+          !isHomePage &&
+          (
             <Button colorScheme="blue" onClick={() => handleClick()}>
               Create
             </Button>
           )}
 
-        {isTeacher &&
+        {data?.isAdmin &&
           !isAdminPage &&
           !isHomePage &&
           !isQuizPage &&
@@ -89,7 +94,7 @@ const Navbar = () => {
           </Button>
         )}
 
-        { !isResultsPage && 
+        { !isResultsPage &&!isHomePage && 
           <Button colorScheme="red" onClick={handleLogout}>
             Logout
           </Button>

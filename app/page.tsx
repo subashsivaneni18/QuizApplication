@@ -11,6 +11,7 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [teacher,setTeacher] = useState("0")
   const toast = useToast();
   const router = useRouter();
 
@@ -20,7 +21,7 @@ export default function Home() {
 
   const handleRegister = useCallback(async () => {
     try {
-      await axios.post("/api/register", { username, email, password });
+      await axios.post("/api/register", { username, email, password ,});
       toast({
         title: "Successfully Registered",
         status: "success",
@@ -39,8 +40,9 @@ export default function Home() {
       setEmail("");
       setPassword("");
       setUsername("");
+      setTeacher("")
     }
-  }, [username, email, password, toast, setEmail, setPassword, setUsername]);
+  }, [username, email, password, toast, setEmail, setPassword, setUsername,setTeacher]);
 
   const handleLogin = useCallback(async () => {
     try {
@@ -102,6 +104,12 @@ export default function Home() {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
+            {/* {variant==='Register' && <Input
+              type="text"
+              placeholder="Enter 0/1"
+              onChange={(e) => setTeacher(e.target.value)}
+              value={teacher}
+            />} */}
           </div>
           <div className="flex flex-col gap-3">
             <Button

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 export async function POST(req:Request) {
   try {
-    const { email, username, password ,isAdmin} = await req.json();
+    const { email, username, password ,isTeacher} = await req.json();
 
     if (
       !email ||
@@ -30,12 +30,25 @@ export async function POST(req:Request) {
     // Hash the password using bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    let x;
+
+    if(isTeacher==="0")
+    {
+      x=false
+    }
+    else if (isTeacher==="1")
+    {
+      x=true
+    }
+
+    
+
     const newUser = await prisma.user.create({
       data: {
         email,
         name: username,
         hashedPassword, // Save the hashed password in the database
-        isAdmin:isAdmin
+        isAdmin:x
       },
     });
 
