@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type QuizResult {
+  id     String
+  marks  Int
+}
+
+
+model User {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  hashedPassword  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  accounts Account[]
+  completedQuizs  QuizResult[]
+  TempScore Int?
+  isAdmin Boolean?  @default(false)
+}
+
+model Account {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String   @db.ObjectId
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.String
+  access_token       String?  @db.String
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.String
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Quiz {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  Name        String
+  Category String?
+  EachQuestionMark Int
+  questionIds String[] @db.ObjectId
+
+  questions Question? @relation(fields: [questionIds],references: [id]) 
+}
+
+model Question {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  Text      String
+  options   String[]
+  answer    String
+  quiz Quiz[]
+}
+
