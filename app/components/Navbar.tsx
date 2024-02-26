@@ -11,7 +11,7 @@ import useSWR from "swr";
 
 const Navbar = () => {
 
-  const {data} = useSWR<{isAdmin:string}>('/api/isAdmin',fetcher)
+
 
   const pathName = usePathname()
   const quizId = pathName.split("/").pop();
@@ -51,7 +51,7 @@ const Navbar = () => {
        }
     }, [isQuizPage,toast]);
 
-    console.log(data?.isAdmin)
+    console.log(isTeacher)
 
     
 
@@ -67,7 +67,7 @@ const Navbar = () => {
         BrainBurst
       </p>
       <div className="flex gap-3 items-center">
-        {data?.isAdmin &&
+        {isTeacher &&
           !isResultsPage &&
           !isAdminPage &&
           !isQuizPage && 
@@ -78,7 +78,7 @@ const Navbar = () => {
             </Button>
           )}
 
-        {data?.isAdmin &&
+        {isTeacher &&
           !isAdminPage &&
           !isHomePage &&
           !isQuizPage &&
