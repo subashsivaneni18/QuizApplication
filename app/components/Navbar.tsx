@@ -5,7 +5,7 @@ import { redirect, usePathname, useRouter } from "next/navigation";
 import React, { useCallback } from "react";
 import useSWR from "swr";
 import fetcher from "@/libs/fetcher";
-import Link from "next/link";
+
 
 
 const Navbar = () => {
@@ -13,7 +13,7 @@ const Navbar = () => {
   const pathName = usePathname()
   const quizId = pathName.split("/").pop();
   const toast = useToast()
-  // const isTeacher = false
+  const isTeacher = false
   const isAdminPage = pathName.includes('/admin')
   const isEditPage = pathName.includes(`/admin/edit/${quizId}`)
   const isResultsPage = pathName.includes('/results')
@@ -21,7 +21,7 @@ const Navbar = () => {
   const isHomePage = pathName==='/'
   const router = useRouter()
 
-  const {data:isTeacher} = useSWR<{isAdmin:boolean}>(`/api/isAdmin`,fetcher)
+  // const {data:isTeacher} = useSWR<{isAdmin:boolean}>(`/api/isAdmin`,fetcher)
 
  
 
@@ -64,7 +64,7 @@ const Navbar = () => {
         BrainBurst
       </p>
       <div className="flex gap-3 items-center">
-        {isTeacher?.isAdmin &&
+        {isTeacher &&
           !isResultsPage &&
           !isAdminPage &&
           !isQuizPage && (
@@ -73,7 +73,7 @@ const Navbar = () => {
             </Button>
           )}
 
-        {isTeacher?.isAdmin &&
+        {isTeacher &&
           !isAdminPage &&
           !isHomePage &&
           !isQuizPage &&
