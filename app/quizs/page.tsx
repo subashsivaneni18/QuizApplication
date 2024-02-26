@@ -8,7 +8,7 @@ import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 const QuizsPage = () => {
 
   const [ quizs,setQuizs] =useState<Quiz[]>([])
