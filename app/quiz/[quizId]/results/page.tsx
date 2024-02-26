@@ -1,14 +1,9 @@
 import Navbar from "@/app/components/Navbar";
-import { Question, Quiz } from "@prisma/client";
+import { Question} from "@prisma/client";
 import React from "react";
 import prisma from '@/libs/prismadb'
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/libs/authOptions";
-
-
-interface X {
-  score: number;
-}
 
 
 

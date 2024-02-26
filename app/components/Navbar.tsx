@@ -8,7 +8,7 @@ import useSWR from "swr";
 
 
 
-
+export const dynamic = "force-dynamic";
 const Navbar = () => {
 
 
@@ -16,7 +16,6 @@ const Navbar = () => {
   const pathName = usePathname()
   const quizId = pathName.split("/").pop();
   const toast = useToast()
-  const isTeacher = true
   const isAdminPage = pathName.includes('/admin')
   const isEditPage = pathName.includes(`/admin/edit/${quizId}`)
   const isResultsPage = pathName.includes('/results')
@@ -24,6 +23,7 @@ const Navbar = () => {
   const isHomePage = pathName==='/'
   const router = useRouter()
 
+  const {data} = useSWR<{isAdmin:boolean}>('/api/isAdmin',fetcher)
 
 
  
@@ -51,10 +51,7 @@ const Navbar = () => {
        }
     }, [isQuizPage,toast]);
 
-    console.log(isTeacher)
-
-    
-
+    console.log(data?.isAdmin)
 
 
 
@@ -67,7 +64,7 @@ const Navbar = () => {
         BrainBurst
       </p>
       <div className="flex gap-3 items-center">
-        {isTeacher &&
+        {data?.isAdmin &&
           !isResultsPage &&
           !isAdminPage &&
           !isQuizPage && 
@@ -78,7 +75,7 @@ const Navbar = () => {
             </Button>
           )}
 
-        {isTeacher &&
+        {data?.isAdmin &&
           !isAdminPage &&
           !isHomePage &&
           !isQuizPage &&
@@ -88,7 +85,7 @@ const Navbar = () => {
             </Button>
           )}
 
-        {isEditPage && isTeacher && (
+        {isEditPage && data?.isAdmin && (
           <Button onClick={() => router.push(pathName + "/questions")}>
             Manage Questions
           </Button>

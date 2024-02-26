@@ -8,10 +8,10 @@ import { Quiz } from "@prisma/client";
 import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
+export const dynamic = "force-dynamic";
 const QuizsPage = () => {
   const { data } = useSWR<Quiz[]>(`/api/Quizs`, fetcher);
   const router = useRouter()
-
   const {status} = useSession()
 
   if(status==='loading')

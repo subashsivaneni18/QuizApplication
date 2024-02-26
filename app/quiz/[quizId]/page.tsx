@@ -34,6 +34,8 @@ const storeResponses = (responses: any) => {
   localStorage.setItem("quizResponses", JSON.stringify(responses));
 };
 
+export const dynamic = "force-dynamic";
+
 const QuizPage = ({ params }: { params: { quizId: string } }) => {
   const router = useRouter();
   const toast = useToast();
@@ -54,8 +56,7 @@ const QuizPage = ({ params }: { params: { quizId: string } }) => {
   );
   const { data: quiz } = useSWR<Quiz>(`/api/quiz/${params.quizId}`, fetcher);
 
-  var isQuizGoing = 0;
-
+ 
   useEffect(() => {
     if (duration > 0) {
       const intervalId = setInterval(() => {
